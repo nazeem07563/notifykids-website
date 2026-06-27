@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NotifyKids — WhatsApp for Schools</title>
+  <meta name="description" content="Send attendance alerts, homework updates, fee reminders and more to parents — directly on WhatsApp. No app to install. No per-message fees." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #16A34A;
+      --green-light: #DCFCE7;
+      --orange: #EA580C;
+      --orange-light: #FFF7ED;
+      --dark: #0F172A;
+      --mid: #475569;
+      --muted: #94A3B8;
+      --border: #E2E8F0;
+      --bg: #F8FAFC;
+      --white: #FFFFFF;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .logo span.n { color: var(--green); }
+    .logo span.k { color: var(--orange); }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--mid);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--dark); }
+    .btn-nav {
+      background: var(--green);
+      color: white !important;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+    }
+    .btn-nav:hover { background: #15803D !important; }
+    .btn-login {
+      color: var(--dark) !important;
+      font-weight: 600 !important;
+      border: 1.5px solid #D1D5DB;
+      padding: 7px 18px;
+      border-radius: 8px;
+    }
+    .btn-login:hover { border-color: var(--green); color: var(--green) !important; }
+
+    /* HERO */
+    .hero {
+      padding: 96px 24px 80px;
+      text-align: center;
+      background: linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #25D366;
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 999px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+      animation: wa-pulse 2.5s infinite;
+    }
+    .hero-wa-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      padding: 16px 24px;
+      background: #F0FDF4;
+      border: 1.5px solid #BBF7D0;
+      border-radius: 12px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-wa-strip-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--green);
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      max-width: 780px;
+      margin: 0 auto 20px;
+    }
+    .hero h1 .accent-g { color: var(--green); }
+    .hero h1 .accent-o { color: var(--orange); }
+    .hero p {
+      font-size: 18px;
+      color: var(--mid);
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--green);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #15803D; }
+    .btn-secondary {
+      background: white;
+      color: var(--dark);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1.5px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--mid); }
+
+    /* HERO SCREENSHOT */
+    .hero-visual {
+      max-width: 820px;
+      margin: 56px auto 0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.12);
+      border: 1px solid var(--border);
+      background: #0F172A;
+    }
+    .screen-bar {
+      background: #1E293B;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.r { background: #EF4444; }
+    .dot.y { background: #F59E0B; }
+    .dot.g { background: #22C55E; }
+    .screen-content {
+      background: var(--bg);
+      padding: 32px;
+    }
+    .mock-dashboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .mock-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .mock-card .label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .mock-card .value { font-size: 28px; font-weight: 800; color: var(--dark); }
+    .mock-card .sub { font-size: 12px; color: var(--green); font-weight: 500; margin-top: 2px; }
+    .mock-msg {
+      grid-column: 1 / -1;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .mock-msg-header { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--dark); }
+    .mock-msg-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--mid);
+    }
+    .mock-msg-row:last-child { border-bottom: none; }
+    .mock-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .badge-green { background: var(--green-light); color: var(--green); }
+    .badge-orange { background: var(--orange-light); color: var(--orange); }
+    .badge-blue { background: #DBEAFE; color: #1D4ED8; }
+
+    /* LOGOS / TRUST */
+    .trust {
+      padding: 40px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .trust p { font-size: 13px; color: var(--muted); font-weight: 500; margin-bottom: 20px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .trust-logos { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; }
+    .trust-logo { font-size: 14px; font-weight: 700; color: var(--mid); opacity: 0.6; }
+
+    /* SECTION */
+    section { padding: 96px 24px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px;
+      color: var(--mid);
+      max-width: 560px;
+    }
+
+    /* FEATURES */
+    .features-bg { background: var(--bg); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 56px;
+    }
+    .feature-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: box-shadow 0.2s;
+    }
+    .feature-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--mid); line-height: 1.6; }
+
+    /* HOW IT WORKS */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; margin-top: 56px; }
+    .step { text-align: center; }
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 14px; color: var(--mid); }
+
+    /* PRICING */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-top: 56px;
+      align-items: start;
+    }
+    .plan-card {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      background: white;
+      transition: box-shadow 0.2s;
+    }
+    .plan-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+    .plan-card.popular {
+      border-color: var(--green);
+      position: relative;
+    }
+    .popular-badge {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--green);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .plan-name { font-size: 14px; font-weight: 700; color: var(--mid); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .plan-price { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; }
+    .plan-price span { font-size: 16px; font-weight: 500; color: var(--mid); }
+    .plan-old { font-size: 14px; color: var(--muted); text-decoration: line-through; margin-bottom: 4px; }
+    .plan-desc { font-size: 13px; color: var(--mid); margin-bottom: 20px; }
+    .plan-divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .plan-features li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--mid); }
+    .plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .plan-features li.off { opacity: 0.4; }
+    .plan-features li.off::before { content: '✕'; color: var(--muted); }
+    .btn-plan {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      background: var(--green-light);
+      color: var(--green);
+      transition: background 0.2s;
+    }
+    .btn-plan:hover { background: #BBF7D0; }
+    .plan-card.popular .btn-plan {
+      background: var(--green);
+      color: white;
+    }
+    .plan-card.popular .btn-plan:hover { background: #15803D; }
+    .plan-card.enterprise { background: var(--dark); border-color: var(--dark); }
+    .plan-card.enterprise .plan-name { color: #94A3B8; }
+    .plan-card.enterprise .plan-price { color: white; }
+    .plan-card.enterprise .plan-desc { color: #94A3B8; }
+    .plan-card.enterprise .plan-divider { border-color: #334155; }
+    .plan-card.enterprise .plan-features li { color: #CBD5E1; }
+    .plan-card.enterprise .plan-features li::before { color: #4ADE80; }
+    .plan-card.enterprise .btn-plan { background: white; color: var(--dark); }
+    .plan-card.enterprise .btn-plan:hover { background: #E2E8F0; }
+
+    /* COMPARISON */
+    .compare-table { margin-top: 56px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .compare-header, .compare-row {
+      display: grid;
+      grid-template-columns: 2fr 1.4fr 1fr 1fr 1fr;
+      align-items: center;
+    }
+    .compare-header {
+      background: var(--dark);
+      padding: 16px 0;
+    }
+    .compare-col {
+      text-align: center;
+      padding: 12px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94A3B8;
+      line-height: 1.4;
+    }
+    .compare-eg { font-size: 11px; font-weight: 400; opacity: 0.7; display: block; margin-top: 2px; }
+    .compare-feature-col { padding: 12px 20px; }
+    .nk-col { background: rgba(22,163,74,0.15); color: white !important; }
+    .nk-badge {
+      display: inline-block;
+      background: var(--green);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .compare-row {
+      border-top: 1px solid var(--border);
+      background: white;
+    }
+    .compare-row:nth-child(odd) { background: var(--bg); }
+    .compare-feature {
+      padding: 16px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .compare-row .compare-col { font-weight: 500; color: var(--mid); }
+    .compare-row .nk-col { background: #F0FDF4; }
+    .c-yes { color: var(--green); font-weight: 700; display: block; }
+    .c-no  { color: #EF4444; font-weight: 700; display: block; }
+    .c-half { color: #D97706; font-weight: 700; display: block; }
+    .c-note { font-size: 11px; color: var(--muted); margin-top: 3px; font-weight: 400; }
+    @media (max-width: 768px) {
+      .compare-header, .compare-row { grid-template-columns: 1.5fr 1fr 1fr; }
+      .compare-col:nth-child(4), .compare-col:nth-child(5),
+      .compare-header > div:nth-child(4), .compare-header > div:nth-child(5) { display: none; }
+    }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%);
+      text-align: center;
+      padding: 96px 24px;
+    }
+    .cta-section h2 {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    .cta-section p { font-size: 17px; color: #94A3B8; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .cta-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .btn-cta {
+      background: var(--green);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-cta:hover { background: #15803D; }
+    .btn-cta-ghost {
+      background: transparent;
+      color: white;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.25);
+    }
+    .btn-cta-ghost:hover { background: rgba(255,255,255,0.08); }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 48px 24px;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer-logo { font-size: 18px; font-weight: 800; text-decoration: none; letter-spacing: -0.5px; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--mid); text-decoration: none; }
+    .footer-links a:hover { color: var(--dark); }
+    .footer-copy { font-size: 13px; color: var(--muted); }
+
+    /* WHATSAPP SECTION */
+    .wa-section { background: #ECE5DD; }
+    .wa-section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .wa-text .section-label { color: #128C7E; }
+    .wa-text .section-title { color: var(--dark); }
+    .wa-text p { font-size: 16px; color: var(--mid); margin-top: 16px; line-height: 1.7; }
+    .wa-text ul { margin-top: 20px; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .wa-text ul li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--mid); }
+    .wa-text ul li span.ic { font-size: 18px; flex-shrink: 0; }
+
+    /* Phone mockup */
+    .wa-phone {
+      width: 280px;
+      margin: 0 auto;
+      background: #ECE5DD;
+      border-radius: 36px;
+      border: 8px solid #0F172A;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+    .wa-phone-bar {
+      background: #128C7E;
+      padding: 12px 16px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .wa-phone-back { color: white; font-size: 18px; }
+    .wa-phone-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #25D366;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: white; font-weight: 700;
+    }
+    .wa-phone-info { flex: 1; }
+    .wa-phone-name { color: white; font-size: 14px; font-weight: 600; }
+    .wa-phone-status { color: rgba(255,255,255,0.7); font-size: 11px; }
+    .wa-phone-body {
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 380px;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b2c9b2' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .wa-bubble {
+      background: white;
+      border-radius: 8px 8px 8px 2px;
+      padding: 10px 12px;
+      max-width: 88%;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #1a1a1a;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .wa-bubble .wa-school { font-weight: 700; color: #128C7E; font-size: 11px; margin-bottom: 4px; }
+    .wa-bubble .wa-type {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+    .wa-bubble .wa-time { font-size: 10px; color: #94A3B8; margin-top: 6px; text-align: right; }
+    .wa-bubble .wa-tick { color: #34B7F1; }
+    .type-attend { background: #DCFCE7; color: #16A34A; }
+    .type-fee { background: #FEF3C7; color: #D97706; }
+    .type-hw { background: #DBEAFE; color: #1D4ED8; }
+    .type-report { background: #F3E8FF; color: #7C3AED; }
+
+    /* WHATSAPP FLOAT */
+    .wa-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .wa-float-label {
+      background: #0F172A;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .wa-float-btn {
+      background: #25D366;
+      color: white;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.5);
+      font-size: 26px;
+      flex-shrink: 0;
+      animation: wa-pulse 2s infinite;
+    }
+    @keyframes wa-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }
+      70%  { box-shadow: 0 0 0 12px rgba(37,211,102,0); }
+      100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+    }
+    .wa-float:hover .wa-float-btn { transform: scale(1.08); }
+
+    @media (max-width: 768px) {
+      .wa-section-inner { grid-template-columns: 1fr; }
+      .wa-phone { width: 240px; }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .mock-dashboard { grid-template-columns: repeat(2, 1fr); }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <span class="n">Notify</span><span class="k">Kids</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact" class="btn-nav">Book a Demo</a>
+    </div>
+    <a href="https://app.notifykids.com" class="btn-login">Login</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.52 14.17c-.23.64-1.33 1.22-1.83 1.29-.5.07-1.15.1-1.86-.12-.43-.13-.98-.31-1.68-.61-2.96-1.28-4.89-4.27-5.04-4.47-.15-.2-1.23-1.64-1.23-3.13s.78-2.22 1.06-2.52c.27-.3.59-.38.79-.38.2 0 .39.01.56.01.18.01.43-.07.67.51.25.59.84 2.05.91 2.2.08.15.13.33.03.53-.1.2-.15.32-.3.5-.14.17-.3.38-.43.51-.14.14-.29.29-.12.57.17.28.74 1.22 1.59 1.97 1.09.97 2.01 1.27 2.29 1.41.28.14.44.12.61-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.65.78 1.93.92.28.14.47.21.54.33.07.11.07.66-.16 1.3z"/></svg>
+    Messages delivered on WhatsApp — parents need zero setup
+  </div>
+  <h1>
+    Keep parents<br/>
+    <span class="accent-g">notified</span>. Keep <span class="accent-o">kids</span> ahead.
+  </h1>
+  <p>
+    Send attendance alerts, homework updates, fee reminders and exam results — directly to parents on WhatsApp.
+  </p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Book a Free Demo</a>
+    <a href="#pricing" class="btn-secondary">See Pricing →</a>
+  </div>
+  <div class="hero-wa-strip">
+    <div class="hero-wa-strip-item">✅ No app download</div>
+    <div class="hero-wa-strip-item">✅ No registration</div>
+    <div class="hero-wa-strip-item">✅ 98% open rate</div>
+    <div class="hero-wa-strip-item">✅ Zero per-message cost</div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="screen-bar">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+    </div>
+    <div class="screen-content">
+      <div class="mock-dashboard">
+        <div class="mock-card">
+          <div class="label">Students</div>
+          <div class="value">480</div>
+          <div class="sub">↑ 12 this month</div>
+        </div>
+        <div class="mock-card">
+          <div class="label">Messages Sent</div>
+          <div class="value">2,841</div>
+          <div class="sub">↑ 340 today</div>
+        </div>
+        <div class="mock-card">
+          <div class="label">Delivery Rate</div>
+          <div class="value">98.4%</div>
+          <div class="sub">Via WhatsApp</div>
+        </div>
+        <div class="mock-msg">
+          <div class="mock-msg-header">Recent Broadcasts</div>
+          <div class="mock-msg-row">
+            <span class="mock-badge badge-green">Attendance</span>
+            Class 10-A — 42 parents notified · 5 min ago
+          </div>
+          <div class="mock-msg-row">
+            <span class="mock-badge badge-blue">Homework</span>
+            Class 8-B — Maths worksheet due Friday · 1h ago
+          </div>
+          <div class="mock-msg-row">
+            <span class="mock-badge badge-orange">Fee Reminder</span>
+            All Parents — Term 2 fees due July 5 · 3h ago
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <p>Designed for Indian schools</p>
+  <div class="trust-logos">
+    <div class="trust-logo">CBSE Schools</div>
+    <div class="trust-logo">ICSE Schools</div>
+    <div class="trust-logo">State Board Schools</div>
+    <div class="trust-logo">International Schools</div>
+    <div class="trust-logo">Coaching Institutes</div>
+  </div>
+</div>
+
+<!-- WHATSAPP PREVIEW — USP first -->
+<section class="wa-section" id="preview">
+  <div class="section-inner">
+    <div class="wa-section-inner">
+      <div class="wa-text">
+        <div class="section-label">What parents see</div>
+        <div class="section-title">Lands directly in<br/>their WhatsApp</div>
+        <p>No app to download. No login. Parents get the message on WhatsApp — the one app they already check 50 times a day.</p>
+        <ul>
+          <li><span class="ic">✅</span> Instant delivery — messages arrive in seconds</li>
+          <li><span class="ic">📌</span> Can't be missed — WhatsApp has 98% open rate</li>
+          <li><span class="ic">🔒</span> Private — each parent gets their own message</li>
+          <li><span class="ic">💬</span> No reply needed — one-way, clean communication</li>
+        </ul>
+      </div>
+
+      <div class="wa-phone">
+        <div class="wa-phone-bar">
+          <div class="wa-phone-back">‹</div>
+          <div class="wa-phone-avatar">GS</div>
+          <div class="wa-phone-info">
+            <div class="wa-phone-name">Gems School</div>
+            <div class="wa-phone-status">School WhatsApp</div>
+          </div>
+        </div>
+        <div class="wa-phone-body">
+          <div class="wa-bubble">
+            <div class="wa-school">🏫 Gems School</div>
+            <div><span class="wa-type type-attend">Attendance Alert</span></div>
+            Dear Parent,<br/>
+            Your ward <strong>Rahul Kumar</strong> (Class 10-A) was marked <strong>Absent</strong> today, 28 Jun 2025.<br/><br/>
+            Please contact the school if this is an error.
+            <div class="wa-time">9:12 AM <span class="wa-tick">✓✓</span></div>
+          </div>
+          <div class="wa-bubble">
+            <div class="wa-school">🏫 Gems School</div>
+            <div><span class="wa-type type-hw">Homework</span></div>
+            Class 10-A | Mathematics<br/>
+            📚 Ch. 5 – Quadratic Equations<br/>
+            Exercise 5.3 (Q1–10)<br/><br/>
+            📅 Due: Tomorrow (29 Jun)
+            <div class="wa-time">12:30 PM <span class="wa-tick">✓✓</span></div>
+          </div>
+          <div class="wa-bubble">
+            <div class="wa-school">🏫 Gems School</div>
+            <div><span class="wa-type type-fee">Fee Reminder</span></div>
+            Dear Parent,<br/>
+            Term 2 fee of <strong>₹12,500</strong> for <strong>Rahul Kumar</strong> is due by <strong>5th July 2025</strong>.<br/><br/>
+            Pay at school office or online.
+            <div class="wa-time">3:00 PM <span class="wa-tick">✓✓</span></div>
+          </div>
+          <div class="wa-bubble">
+            <div class="wa-school">🏫 Gems School</div>
+            <div><span class="wa-type type-report">Daily Report</span></div>
+            Dear Mr Sharma Sir,<br/><br/>
+            <strong>Rahul Sharma's Daily Report</strong><br/><br/>
+            📋 Attendance: Present ✓<br/><br/>
+            📚 Today's Homework:<br/>
+            • Maths: Complete Ex 5.1<br/>
+            • Science: Draw plant cell<br/><br/>
+            — Gems School
+            <div class="wa-time">4:15 PM <span class="wa-tick">✓✓</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-bg" id="features">
+  <div class="section-inner">
+    <div class="section-label">Features</div>
+    <div class="section-title">Everything your school needs<br/>to stay connected</div>
+    <div class="section-sub">One dashboard. Every type of parent communication — managed and tracked.</div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#DCFCE7">📢</div>
+        <h3>Bulk Messaging</h3>
+        <p>Send a message to all parents, specific classes, or individual students in seconds. No SMS costs. No app.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#FEF3C7">✅</div>
+        <h3>Attendance Alerts</h3>
+        <p>Automatically notify parents when a student is absent or late. Keep parents in the loop without phone calls.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#DBEAFE">📚</div>
+        <h3>Homework Notifications</h3>
+        <p>Share homework details and deadlines per class. Parents are informed; students are accountable.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#FEE2E2">💳</div>
+        <h3>Fee Reminders</h3>
+        <p>Reduce late payments with automated fee reminders. Reach every parent instantly without follow-up calls.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#F3E8FF">🏆</div>
+        <h3>Exam Results</h3>
+        <p>Share results directly with parents over WhatsApp. Private, instant, and professional.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#FFF7ED">🕐</div>
+        <h3>Daily Message Limits</h3>
+        <p>Set limits per school to avoid over-messaging. Maintain parent trust by sending only what matters.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-inner">
+    <div class="section-label">How it works</div>
+    <div class="section-title">Up and running in 24 hours</div>
+    <div class="section-sub">No technical setup needed on your end. We handle everything.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>We onboard your school</h3>
+        <p>We set up your school account, import student data, and configure your WhatsApp connection.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Admin logs in</h3>
+        <p>Your school admin gets a simple dashboard. No training needed — send messages in 3 clicks.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Parents get messages</h3>
+        <p>Parents receive messages directly on WhatsApp — the app they already have and check every day.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Track and manage</h3>
+        <p>See delivery reports, manage classes, and control exactly what goes out and when.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="compare">
+  <div class="section-inner">
+    <div class="section-label">Why NotifyKids</div>
+    <div class="section-title">Built for parents who don't<br/>install new apps</div>
+    <div class="section-sub">Most school tools fail because parents don't bother setting them up. NotifyKids works on WhatsApp — zero effort for parents.</div>
+
+    <div class="compare-table">
+      <div class="compare-header">
+        <div class="compare-feature-col"></div>
+        <div class="compare-col nk-col">
+          <div class="nk-badge">✦ NotifyKids</div>
+        </div>
+        <div class="compare-col">School App<br/><span class="compare-eg">MySchool, ClassDojo</span></div>
+        <div class="compare-col">SMS / Email</div>
+        <div class="compare-col">Physical Circulars</div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Parent needs to install something</div>
+        <div class="compare-col nk-col"><span class="c-yes">✅ No</span><div class="c-note">WhatsApp already installed</div></div>
+        <div class="compare-col"><span class="c-no">❌ Yes</span><div class="c-note">Must download + register</div></div>
+        <div class="compare-col"><span class="c-half">〜 Partly</span><div class="c-note">Email app needed</div></div>
+        <div class="compare-col"><span class="c-yes">✅ No</span><div class="c-note">But often lost</div></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Message open rate</div>
+        <div class="compare-col nk-col"><span class="c-yes">98%</span><div class="c-note">WhatsApp notifications</div></div>
+        <div class="compare-col"><span class="c-no">20–30%</span><div class="c-note">Low app engagement</div></div>
+        <div class="compare-col"><span class="c-no">15–25%</span><div class="c-note">Email often ignored</div></div>
+        <div class="compare-col"><span class="c-no">Unknown</span><div class="c-note">No tracking possible</div></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Cost per message</div>
+        <div class="compare-col nk-col"><span class="c-yes">₹0</span><div class="c-note">Flat monthly plan</div></div>
+        <div class="compare-col"><span class="c-half">Varies</span><div class="c-note">Per-user licensing</div></div>
+        <div class="compare-col"><span class="c-no">₹0.20–0.50</span><div class="c-note">Per SMS, adds up fast</div></div>
+        <div class="compare-col"><span class="c-no">Print cost</span><div class="c-note">Plus staff time</div></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Works on basic Android phones</div>
+        <div class="compare-col nk-col"><span class="c-yes">✅ Yes</span><div class="c-note">WhatsApp runs anywhere</div></div>
+        <div class="compare-col"><span class="c-no">❌ Often no</span><div class="c-note">Requires newer devices</div></div>
+        <div class="compare-col"><span class="c-yes">✅ Yes</span></div>
+        <div class="compare-col"><span class="c-yes">✅ Yes</span></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Delivery confirmation</div>
+        <div class="compare-col nk-col"><span class="c-yes">✅ Read receipts</span></div>
+        <div class="compare-col"><span class="c-half">〜 Sometimes</span></div>
+        <div class="compare-col"><span class="c-no">❌ No</span></div>
+        <div class="compare-col"><span class="c-no">❌ No</span></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Setup time for school</div>
+        <div class="compare-col nk-col"><span class="c-yes">24 hours</span><div class="c-note">We handle everything</div></div>
+        <div class="compare-col"><span class="c-no">Weeks</span><div class="c-note">IT setup + training</div></div>
+        <div class="compare-col"><span class="c-half">Few days</span><div class="c-note">Vendor integration</div></div>
+        <div class="compare-col"><span class="c-yes">Immediate</span><div class="c-note">But no tracking</div></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Bulk message 500+ parents at once</div>
+        <div class="compare-col nk-col"><span class="c-yes">✅ Yes</span><div class="c-note">Class or school-wide</div></div>
+        <div class="compare-col"><span class="c-half">〜 Limited</span><div class="c-note">Plan-dependent</div></div>
+        <div class="compare-col"><span class="c-no">❌ Costly</span><div class="c-note">₹100+ per broadcast</div></div>
+        <div class="compare-col"><span class="c-no">❌ No</span><div class="c-note">Manual only</div></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Parent needs training or onboarding</div>
+        <div class="compare-col nk-col"><span class="c-yes">✅ Never</span><div class="c-note">They just use WhatsApp</div></div>
+        <div class="compare-col"><span class="c-no">❌ Yes</span><div class="c-note">Account setup needed</div></div>
+        <div class="compare-col"><span class="c-half">〜 Minimal</span></div>
+        <div class="compare-col"><span class="c-yes">✅ No</span><div class="c-note">But nothing digital</div></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Send images, PDFs, files</div>
+        <div class="compare-col nk-col"><span class="c-yes">✅ Yes</span><div class="c-note">Full media support</div></div>
+        <div class="compare-col"><span class="c-yes">✅ Yes</span></div>
+        <div class="compare-col"><span class="c-half">〜 Email only</span><div class="c-note">Not SMS</div></div>
+        <div class="compare-col"><span class="c-no">❌ Physical only</span></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Monthly flat cost (250 students)</div>
+        <div class="compare-col nk-col"><span class="c-yes">₹2,999</span><div class="c-note">Unlimited messages</div></div>
+        <div class="compare-col"><span class="c-no">₹5,000–15,000</span><div class="c-note">Per-student pricing</div></div>
+        <div class="compare-col"><span class="c-no">₹3,000–8,000+</span><div class="c-note">Depends on volume</div></div>
+        <div class="compare-col"><span class="c-half">Print costs</span><div class="c-note">+ Staff time</div></div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-feature">Teacher can send class updates</div>
+        <div class="compare-col nk-col"><span class="c-yes">✅ Yes</span><div class="c-note">Teacher login included</div></div>
+        <div class="compare-col"><span class="c-yes">✅ Yes</span></div>
+        <div class="compare-col"><span class="c-no">❌ No</span></div>
+        <div class="compare-col"><span class="c-no">❌ No</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="features-bg" id="pricing">
+  <div class="section-inner">
+    <div class="section-label">Pricing</div>
+    <div class="section-title">Simple, honest pricing</div>
+    <div class="section-sub">No per-message fees. No surprises. Cancel anytime.</div>
+
+    <div class="pricing-grid">
+      <!-- Basic -->
+      <div class="plan-card">
+        <div class="plan-name">Basic</div>
+        <div class="plan-old">₹4,999/mo</div>
+        <div class="plan-price">₹2,999 <span>/mo</span></div>
+        <div class="plan-desc">For small schools getting started.</div>
+        <hr class="plan-divider" />
+        <ul class="plan-features">
+          <li>Up to 250 students</li>
+          <li>Bulk messaging</li>
+          <li>Attendance alerts</li>
+          <li>Homework notifications</li>
+          <li>Fee reminders</li>
+          <li>Exam results</li>
+          <li class="off">Marketing messages</li>
+          <li class="off">Timetable</li>
+        </ul>
+        <a href="#contact" class="btn-plan">Get Started</a>
+      </div>
+
+      <!-- Growth -->
+      <div class="plan-card popular">
+        <div class="popular-badge">Most Popular</div>
+        <div class="plan-name">Growth</div>
+        <div class="plan-old">₹9,999/mo</div>
+        <div class="plan-price">₹5,999 <span>/mo</span></div>
+        <div class="plan-desc">For growing schools that want more reach.</div>
+        <hr class="plan-divider" />
+        <ul class="plan-features">
+          <li>Up to 500 students</li>
+          <li>Everything in Basic</li>
+          <li>Marketing messages</li>
+          <li>Timetable sharing</li>
+          <li>Priority support</li>
+          <li class="off">Custom branding</li>
+        </ul>
+        <a href="#contact" class="btn-plan">Get Started</a>
+      </div>
+
+      <!-- Premium -->
+      <div class="plan-card">
+        <div class="plan-name">Premium</div>
+        <div class="plan-old">₹17,999/mo</div>
+        <div class="plan-price">₹9,999 <span>/mo</span></div>
+        <div class="plan-desc">For large schools with full communication needs.</div>
+        <hr class="plan-divider" />
+        <ul class="plan-features">
+          <li>Up to 1000 students</li>
+          <li>Everything in Growth</li>
+          <li>Custom branding</li>
+          <li>Dedicated account manager</li>
+          <li>Teacher login access</li>
+          <li>Advanced analytics</li>
+        </ul>
+        <a href="#contact" class="btn-plan">Get Started</a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="plan-card enterprise">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price" style="font-size:28px">Let's talk</div>
+        <div class="plan-desc">For large institutions needing the official Meta WhatsApp Business API.</div>
+        <hr class="plan-divider" />
+        <ul class="plan-features" style="color:#CBD5E1">
+          <li>Unlimited students</li>
+          <li>Official Meta API</li>
+          <li>Green tick verification</li>
+          <li>White-label option</li>
+          <li>Custom integrations</li>
+          <li>SLA support</li>
+        </ul>
+        <a href="#contact" class="btn-plan">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / CONTACT -->
+<section class="cta-section" id="contact">
+  <h2>Ready to connect your school?</h2>
+  <p>Book a free 20-minute demo. We'll set everything up — you just send the first message.</p>
+  <div class="cta-actions">
+    <a href="https://wa.me/917013704913?text=Hi%2C%20I%27m%20interested%20in%20NotifyKids%20for%20my%20school" class="btn-cta">📲 WhatsApp Us</a>
+    <a href="mailto:hello@notifykids.com" class="btn-cta-ghost">hello@notifykids.com</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="#" class="footer-logo">
+      <span style="color:var(--green)">Notify</span><span style="color:var(--orange)">Kids</span>
+    </a>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-copy">© 2025 NotifyKids. Made in India 🇮🇳</div>
+  </div>
+</footer>
+
+<!-- WhatsApp Float Button -->
+<a href="https://wa.me/917013704913?text=Hi%2C%20I%27m%20interested%20in%20NotifyKids%20for%20my%20school" class="wa-float" title="Chat on WhatsApp">
+  <div class="wa-float-label">Book a Free Demo</div>
+  <div class="wa-float-btn">💬</div>
+</a>
+
+</body>
+</html>
