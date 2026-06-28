@@ -637,10 +637,54 @@
     }
 
     @media (max-width: 640px) {
+      /* nav */
       .nav-text { display: none; }
       .btn-nav { display: none; }
-      .mock-dashboard { grid-template-columns: repeat(2, 1fr); }
+
+      /* spacing */
+      section { padding: 56px 20px; }
+      .hero { padding: 52px 20px 44px; }
+      .cta-section { padding: 56px 20px; }
+      .trust { padding: 32px 20px; }
+      footer { padding: 36px 20px; }
+
+      /* hero */
+      .hero h1 { font-size: 34px; letter-spacing: -1px; }
+      .hero p { font-size: 15px; margin-bottom: 28px; }
+      .hero-badge { font-size: 13px; padding: 7px 14px; margin-bottom: 20px; }
+      .hero-actions { flex-direction: column; gap: 10px; }
+      .btn-primary, .btn-secondary { width: 100%; text-align: center; padding: 14px 20px; }
+      .hero-wa-strip { gap: 10px; padding: 14px 16px; }
+      .hero-wa-strip-item { font-size: 12px; }
+
+      /* hero visual (mock dashboard) */
+      .hero-visual { margin-top: 36px; border-radius: 12px; }
+      .screen-content { padding: 16px; }
+      .mock-dashboard { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .mock-card { padding: 14px; }
+      .mock-card .value { font-size: 22px; }
+      .mock-card .label { font-size: 10px; }
+
+      /* sections */
+      .features-grid { grid-template-columns: 1fr; margin-top: 36px; gap: 16px; }
+      .steps { grid-template-columns: 1fr; gap: 28px; margin-top: 36px; }
+      .pricing-grid { grid-template-columns: 1fr; margin-top: 36px; }
+      .section-title { font-size: 26px; letter-spacing: -0.5px; }
+      .section-sub { font-size: 15px; }
+
+      /* comparison table — too cramped on mobile, hide it */
+      .compare-table { display: none; }
+
+      /* CTA */
+      .cta-actions { flex-direction: column; gap: 10px; }
+      .btn-cta, .btn-cta-ghost { width: 100%; text-align: center; padding: 14px 20px; }
+
+      /* footer */
       .footer-inner { flex-direction: column; align-items: flex-start; }
+      .footer-links { flex-wrap: wrap; gap: 16px; }
+
+      /* whatsapp float — hide label, keep button */
+      .wa-float-label { display: none; }
     }
   </style>
 </head>
