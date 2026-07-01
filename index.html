@@ -607,20 +607,47 @@
       position: relative;
     }
     .wa-bubble .wa-school { font-weight: 700; color: #128C7E; font-size: 11px; margin-bottom: 4px; }
+    @keyframes badge-shimmer {
+      0%   { box-shadow: 0 0 0px 0px currentColor; opacity: 1; }
+      50%  { box-shadow: 0 0 6px 2px currentColor; opacity: 0.85; }
+      100% { box-shadow: 0 0 0px 0px currentColor; opacity: 1; }
+    }
     .wa-bubble .wa-type {
       display: inline-block;
       font-size: 10px;
       font-weight: 700;
-      padding: 2px 7px;
+      padding: 3px 9px;
       border-radius: 999px;
       margin-bottom: 6px;
+      letter-spacing: 0.3px;
+      animation: badge-shimmer 2.4s ease-in-out infinite;
     }
     .wa-bubble .wa-time { font-size: 10px; color: #94A3B8; margin-top: 6px; text-align: right; }
     .wa-bubble .wa-tick { color: #34B7F1; }
-    .type-attend { background: #DCFCE7; color: #16A34A; }
-    .type-fee { background: #FEF3C7; color: #D97706; }
-    .type-hw { background: #DBEAFE; color: #1D4ED8; }
-    .type-report { background: #F3E8FF; color: #7C3AED; }
+    .type-attend {
+      background: linear-gradient(90deg, #BBFCD4, #DCFCE7);
+      color: #15803D;
+      box-shadow: 0 1px 6px rgba(21,128,61,0.18);
+      animation-delay: 0s;
+    }
+    .type-fee {
+      background: linear-gradient(90deg, #FDE68A, #FEF3C7);
+      color: #B45309;
+      box-shadow: 0 1px 6px rgba(180,83,9,0.18);
+      animation-delay: 0.6s;
+    }
+    .type-hw {
+      background: linear-gradient(90deg, #BFDBFE, #DBEAFE);
+      color: #1D4ED8;
+      box-shadow: 0 1px 6px rgba(29,78,216,0.18);
+      animation-delay: 1.2s;
+    }
+    .type-report {
+      background: linear-gradient(90deg, #E9D5FF, #F3E8FF);
+      color: #6D28D9;
+      box-shadow: 0 1px 6px rgba(109,40,217,0.18);
+      animation-delay: 1.8s;
+    }
 
     /* WHATSAPP FLOAT */
     .wa-float {
