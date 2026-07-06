@@ -1392,7 +1392,17 @@
   <p>Book a free 20-minute demo. We'll set everything up — you just send the first message.</p>
   <div class="cta-actions">
     <a href="https://wa.me/917013704913?text=Hi%2C%20I%27m%20interested%20in%20NotifyKids%20for%20my%20school" class="btn-cta">📲 WhatsApp Us</a>
-    <a href="mailto:hello@notifykids.com" class="btn-cta-ghost">hello@notifykids.com</a>
+    <button onclick="copyEmail(this)" class="btn-cta-ghost" style="cursor:pointer;border:1.5px solid rgba(255,255,255,0.25);font-family:inherit;">📧 hello@notifykids.com</button>
+    <script>
+      function copyEmail(btn) {
+        navigator.clipboard.writeText('hello@notifykids.com').then(function() {
+          var orig = btn.textContent;
+          btn.textContent = '✅ Email copied!';
+          btn.style.borderColor = '#4ADE80';
+          setTimeout(function(){ btn.textContent = orig; btn.style.borderColor = ''; }, 2000);
+        });
+      }
+    </script>
   </div>
 </section>
 
